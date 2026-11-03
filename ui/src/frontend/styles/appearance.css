@@ -1,5 +1,7 @@
-/* Halo Releases uses slate surfaces, a primary brand accent and a secondary accent. */
+/* Keep the page transparent; controls and overlays use the host's opaque surface. */
 .rh-root.rh-root.rh-public {
+  background: transparent;
+  color-scheme: light;
   --rh-bg: #fff;
   --rh-heading: #0f172a;
   --rh-fg: #334155;
@@ -15,14 +17,15 @@
   --rh-success: var(--rh-primary-text);
 }
 .rh-root.rh-public[data-theme='dark'] {
-  --rh-bg: #0f172a;
-  --rh-heading: #f1f5f9;
-  --rh-fg: #cbd5e1;
-  --rh-muted: #94a3b8;
-  --rh-faint: #718096;
-  --rh-line: #283549;
-  --rh-soft: #1e293b;
-  --rh-hover: #26354a;
+  color-scheme: dark;
+  --rh-bg: #202124;
+  --rh-heading: #f4f4f5;
+  --rh-fg: #d4d4d8;
+  --rh-muted: #a1a1aa;
+  --rh-faint: #8b8b93;
+  --rh-line: color-mix(in srgb, var(--rh-fg) 16%, var(--rh-bg));
+  --rh-soft: color-mix(in srgb, var(--rh-fg) 7%, var(--rh-bg));
+  --rh-hover: color-mix(in srgb, var(--rh-fg) 11%, var(--rh-bg));
   --rh-primary-soft: color-mix(in srgb, var(--rh-primary) 14%, var(--rh-bg));
   --rh-secondary-soft: color-mix(in srgb, var(--rh-secondary) 15%, var(--rh-bg));
 }

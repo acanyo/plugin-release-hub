@@ -10,6 +10,7 @@
     } from '../api/client'
     import { errorMessage } from '../shared/format'
     import { paletteStyle } from './appearance/palette'
+    import { followHostTheme } from './appearance/theme'
     import Icon from '../shared/Icon.svelte'
     import EmptyState from '../shared/EmptyState.svelte'
     import ReleaseOverview from './components/ReleaseOverview.svelte'
@@ -51,7 +52,8 @@
     let loading = $state(true),
         error = $state(''),
         subscribe = $state(false),
-        dark = $state(false)
+        dark = $state(false),
+        surface = $state('#ffffff')
     let overview = $state({ total: 0, stable: 0, prerelease: 0 }),
         overviewLoading = $state(true),
         contentKey = $state(0)
@@ -133,31 +135,6 @@
         })
     }
     onMount(() => {
-        const media = matchMedia('(prefers-color-scheme: dark)')
-        function updateTheme() {
-            const hosts = [document.documentElement, document.body]
-            if (
-                hosts.some(
-                    (host) => host.classList.contains('dark') || host.dataset.theme === 'dark',
-                )
-            )
-                dark = true
-            else if (
-                hosts.some(
-                    (host) => host.classList.contains('light') || host.dataset.theme === 'light',
-                )
-            )
-                dark = false
-            else dark = media.matches
-        }
-        updateTheme()
-        const themeObserver = new MutationObserver(updateTheme)
-        for (const host of [document.documentElement, document.body])
-            themeObserver.observe(host, {
-                attributes: true,
-                attributeFilter: ['class', 'data-theme'],
-            })
-        media.addEventListener('change', updateTheme)
         Promise.all([api.listPublicProjects(), api.getReleaseHubSettings()])
             .then(([p, s]) => {
                 projects = p.data
@@ -171,8 +148,6 @@
                 } else loading = false
             })
         return () => {
-            media.removeEventListener('change', updateTheme)
-            themeObserver.disconnect()
             sequence++
             overviewSequence++
         }
@@ -181,8 +156,12 @@
 
 <div
     class="rh-root rh-public"
+    use:followHostTheme={(theme) => {
+        dark = theme.dark
+        surface = theme.background
+    }}
     data-theme={dark ? 'dark' : 'light'}
-    style={paletteStyle(settings.primaryColor, settings.secondaryColor, dark)}
+    style={paletteStyle(settings.primaryColor, settings.secondaryColor, dark, surface)}
 >
     <main class="rh-shell">
         {#if tokenAction}<ConfirmAction unsubscribe={action === 'unsubscribe'} />

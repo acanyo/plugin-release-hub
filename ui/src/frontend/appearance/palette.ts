@@ -1,5 +1,6 @@
 export const DEFAULT_PRIMARY = '#00c16a'
 export const DEFAULT_SECONDARY = '#3b82f6'
+export const DEFAULT_DARK_BACKGROUND = '#202124'
 type Rgb = [number, number, number]
 
 export function normalizeColor(value: string | undefined, fallback: string): string {
@@ -47,11 +48,17 @@ function readable(color: string, background: string): string {
   return luminance(bg) > 0.4 ? '#000000' : '#ffffff'
 }
 /** Two persisted inputs generate every foreground, tint and dark-mode variant. */
-export function paletteStyle(primaryValue?: string, secondaryValue?: string, dark = false): string {
+export function paletteStyle(
+  primaryValue?: string,
+  secondaryValue?: string,
+  dark = false,
+  surface?: string,
+): string {
   const primary = normalizeColor(primaryValue, DEFAULT_PRIMARY)
   const secondary = normalizeColor(secondaryValue, DEFAULT_SECONDARY)
-  const background = dark ? '#0f172a' : '#ffffff'
+  const background = normalizeColor(surface, dark ? DEFAULT_DARK_BACKGROUND : '#ffffff')
   const values: Record<string, string> = {
+    '--rh-bg': background,
     '--rh-primary': primary,
     '--rh-primary-ink': foreground(primary),
     '--rh-primary-text': readable(primary, background),

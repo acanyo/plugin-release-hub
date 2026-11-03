@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { paletteStyle, normalizeColor, foreground, contrastRatio } from '../appearance/palette'
+import {
+  paletteStyle,
+  normalizeColor,
+  foreground,
+  contrastRatio,
+  DEFAULT_DARK_BACKGROUND,
+} from '../appearance/palette'
 function variable(style: string, name: string) {
   return style
     .split(';')
@@ -22,7 +28,7 @@ describe('two-color frontend palette', () => {
       expect(contrastRatio(color, foreground(color))).toBeGreaterThanOrEqual(4.5)
       for (const dark of [false, true]) {
         const style = paletteStyle(color, color, dark)
-        const background = dark ? '#0f172a' : '#ffffff'
+        const background = dark ? DEFAULT_DARK_BACKGROUND : '#ffffff'
         expect(
           contrastRatio(variable(style, '--rh-primary-text'), background),
         ).toBeGreaterThanOrEqual(4.5)
@@ -30,6 +36,15 @@ describe('two-color frontend palette', () => {
           contrastRatio(variable(style, '--rh-secondary-text'), background),
         ).toBeGreaterThanOrEqual(4.5)
       }
+    },
+  )
+  it.each(['#202124', '#181818', '#303035', '#f5f5f5'])(
+    'keeps accent text readable against the actual host surface %s',
+    (background) => {
+      const style = paletteStyle('#00c16a', '#3b82f6', true, background)
+      expect(variable(style, '--rh-bg')).toBe(background)
+      for (const name of ['--rh-primary-text', '--rh-secondary-text'])
+        expect(contrastRatio(variable(style, name), background)).toBeGreaterThanOrEqual(4.5)
     },
   )
 })
