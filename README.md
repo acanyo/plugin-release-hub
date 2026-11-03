@@ -14,7 +14,7 @@
 ./gradlew build
 ```
 
-Gradle 会安装并构建 UI、运行后端测试，并将前台和 Console 静态资源一起打包到 `build/libs/plugin-release-hub-1.0.1.jar`。普通构建无需运行 Halo 或 Docker。
+Gradle 会安装并构建 UI、运行后端测试，并将前台和 Console 静态资源一起打包到 `build/libs/plugin-release-hub-1.0.2.jar`。普通构建无需运行 Halo 或 Docker。
 
 在 Halo Console 的插件管理中上传此 JAR 并启用。Console 菜单为「版本中心」；前台由你在 Halo「页面」中插入编辑器组件后发布。
 
