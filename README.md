@@ -2,7 +2,7 @@
 
 面向 Halo 的多平台版本发布中心。支持 GitHub、Gitee、GitLab、CNB，提供本地版本时间线、RSS/Atom、经过邮箱确认的邮件订阅，以及签名 Webhook 通知。
 
-[演示站](https://www.xhhao.com) · [使用文档](https://docs.xhhao.com) · [加入 QQ 交流群](https://qm.qq.com/q/YqlBX8d2Ei)
+[演示站](https://www.xhhao.com/releases) · [使用文档](https://docs.xhhao.com) · [加入 QQ 交流群](https://qm.qq.com/q/YqlBX8d2Ei)
 
 ## 环境与构建
 
