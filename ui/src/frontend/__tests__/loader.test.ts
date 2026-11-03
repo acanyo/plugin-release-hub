@@ -51,3 +51,56 @@ it('offers a retry after an asset error', async () => {
   button.click()
   expect(document.head.querySelectorAll('script')).toHaveLength(1)
 })
+it('restores styles removed by Swup head replacement without importing the module again', async () => {
+  setup('<release-hub-embed></release-hub-embed>')
+  const script = document.head.querySelector('script')!
+  const href = document.head.querySelector('link')!.href
+  for (let visit = 0; visit < 3; visit++) {
+    document.body.innerHTML = '<p>Another page</p>'
+    document.head.querySelector('link')!.remove()
+    await new Promise((resolve) => setTimeout(resolve, 0))
+    document.body.innerHTML = '<release-hub-embed></release-hub-embed>'
+    await vi.waitFor(() => expect(document.head.querySelector('link')?.href).toBe(href))
+    expect(document.head.querySelectorAll('link')).toHaveLength(1)
+    expect(document.head.querySelectorAll('script')).toHaveLength(1)
+    expect(document.head.querySelector('script')).toBe(script)
+  }
+})
+it('reuses an existing stylesheet supplied by the theme', () => {
+  setup()
+  const link = document.createElement('link')
+  link.rel = 'stylesheet'
+  link.href = 'https://example.com/plugins/release-hub/assets/frontend/release-hub.css?v=1.0.0'
+  document.head.append(link)
+  document.body.innerHTML = '<release-hub-embed></release-hub-embed>'
+  return vi.waitFor(() => {
+    expect(document.head.querySelectorAll('script')).toHaveLength(1)
+    expect(document.head.querySelectorAll('link')).toHaveLength(1)
+    expect(document.head.querySelector('link')).toBe(link)
+  })
+})
+it('restores CSS removed while the component is still mounted', async () => {
+  setup('<release-hub-embed></release-hub-embed>')
+  document.head.querySelector('link')!.remove()
+  await vi.waitFor(() => expect(document.head.querySelectorAll('link')).toHaveLength(1))
+  expect(document.head.querySelectorAll('script')).toHaveLength(1)
+})
+it('does not automatically retry failed assets on DOM changes', async () => {
+  setup('<release-hub-embed></release-hub-embed>')
+  document.head.querySelector('script')!.dispatchEvent(new Event('error'))
+  document.body.append(document.createElement('p'))
+  await new Promise((resolve) => setTimeout(resolve, 0))
+  expect(document.head.querySelector('script')).toBeNull()
+  expect(document.querySelectorAll('[data-rh-retry]')).toHaveLength(1)
+})
+it('retries only the stylesheet when CSS fails after the module has loaded', async () => {
+  setup('<release-hub-embed></release-hub-embed>')
+  const script = document.head.querySelector('script')!
+  document.head.querySelector('link')!.dispatchEvent(new Event('error'))
+  await new Promise((resolve) => setTimeout(resolve, 0))
+  expect(document.head.querySelector('link')).toBeNull()
+  document.querySelector<HTMLButtonElement>('[data-rh-retry]')!.click()
+  expect(document.head.querySelectorAll('link')).toHaveLength(1)
+  expect(document.head.querySelector('script')).toBe(script)
+  expect(document.querySelector('[data-rh-retry]')).toBeNull()
+})

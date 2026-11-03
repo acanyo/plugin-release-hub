@@ -136,7 +136,7 @@ X-Release-Hub-Signature: sha256=<HMAC-SHA256 十六进制值>
 - 适配移动端，支持键盘操作与原生 dialog 焦点管理。
 - Markdown 原始 HTML 转义后再清洗，移除脚本、不安全链接和外部图片追踪。
 - 使用 Halo 默认编辑器的原生工具箱与斜杠命令保存 `<release-hub-embed>` 组件，页面外壳由当前主题负责，不需要复制模板或粘贴 HTML。
-- 通过 Halo `TemplateHeadProcessor` 安装轻量加载器，仅在页面包含组件时加载前台 JS/CSS，兼容组件重连和页面节点替换。
+- 通过 Halo `TemplateHeadProcessor` 安装轻量加载器，仅在页面包含组件时加载前台 JS/CSS；Swup/PJAX 切换移除动态样式后会自动补回，同一页面不重复加载脚本或样式，兼容组件重连和页面节点替换。
 - 公开浏览 API 位于 `/apis/api.release-hub.xhhao.com/v1alpha1`，主题可以直接使用 `projects`、`releases`、`releases/{name}` 与 `settings`。
 
 Console 的页面也由 Svelte 实现，唯一 Vue 文件 `ConsoleBridge.vue` 负责接入 Halo Vue 路由和复用官方 `axiosInstance`。
