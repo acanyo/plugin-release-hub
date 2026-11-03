@@ -351,6 +351,9 @@
   font-size: 12px;
 }
 .rh-root .rh-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
   width: min(480px, calc(100% - 32px));
   max-width: none;
   max-height: min(840px, calc(100dvh - 48px));
