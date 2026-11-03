@@ -1,0 +1,68 @@
+apiVersion: v1alpha1
+kind: Setting
+metadata:
+  name: release-hub-settings
+spec:
+  forms:
+    - group: general
+      label: 站点与品牌
+      formSchema:
+        - $formkit: text
+          name: brandName
+          label: 品牌名称
+          value: 版本中心
+          validation: required|length:1,80
+        - $formkit: text
+          name: description
+          label: 页面描述
+          value: 每一次更新，都在这里。
+        - $formkit: url
+          name: siteUrl
+          label: 站点公开地址
+          help: 必填，使用完整 HTTPS 地址，用于 Feed、验证邮件和通知详情链接。
+          validation: required|url
+        - $formkit: url
+          name: logoUrl
+          label: Logo 地址
+          help: 可选，使用完整 HTTPS 地址。
+    - group: appearance
+      label: 前台配色
+      formSchema:
+        - $formkit: color
+          name: primaryColor
+          label: 主色
+          format: hex
+          value: "#00c16a"
+          help: 用于主要按钮、导航选中、正式版本标记与时间线。浅色、深色模式自动生成可读的文字和背景色。
+        - $formkit: color
+          name: secondaryColor
+          label: 辅色
+          format: hex
+          value: "#3b82f6"
+          help: 用于预发布标记、下载入口与次级强调。只需设置这两个颜色，即可统一整个前台。
+    - group: github
+      label: GitHub API 代理
+      formSchema:
+        - $formkit: url
+          name: apiBaseUrl
+          label: API 代理根地址
+          value: ""
+          placeholder: https://github-api.example.com
+          help: 留空直连 api.github.com。填写受信任的 HTTPS API 反向代理根地址，可包含路径前缀。仅作用于 GitHub 账号验证、仓库查询和版本同步，代理会收到账号 Token；需透传 Authorization、Accept 等请求头并返回 GitHub JSON。下载加速代理不一定支持 API。
+    - group: mail
+      label: 邮件与通知模板
+      formSchema:
+        - $formkit: checkbox
+          name: enabled
+          label: 开放邮件订阅
+          value: false
+          help: 直接使用 Halo「设置 → 通知设置 → 邮件通知」中的发件配置，请先在 Halo 中启用邮件通知器。本插件无需重复配置 SMTP。
+        - $formkit: text
+          name: subject
+          label: 新版本邮件主题
+          value: "{project} 发布了 {version}"
+          help: 支持 {project} 与 {version} 占位符。
+        - $formkit: textarea
+          name: introduction
+          label: 新版本邮件开场文字
+          value: 你订阅的项目有新版本了。

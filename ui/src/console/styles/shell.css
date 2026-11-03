@@ -1,0 +1,199 @@
+/* The neutral shell and control proportions follow LingUI / Auth UI. */
+.rh-admin {
+  container: release-console / inline-size;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  width: 100%;
+  min-width: 0;
+}
+.rh-admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 76px;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--rh-line);
+}
+.rh-admin-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  white-space: nowrap;
+}
+.rh-admin-mark {
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+}
+.rh-admin-brand strong {
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: -0.6px;
+}
+.rh-admin-tabs {
+  display: flex;
+  flex-shrink: 0;
+  align-items: stretch;
+  gap: 28px;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--rh-line);
+  overflow-x: auto;
+}
+.rh-admin-tabs button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 54px;
+  padding: 0 2px;
+  border-bottom: 2px solid transparent;
+  font-size: 13px;
+  color: var(--rh-muted);
+  white-space: nowrap;
+}
+.rh-admin-tabs button:hover {
+  color: var(--rh-fg);
+}
+.rh-admin-tabs button.active {
+  color: var(--rh-fg);
+  border-color: var(--rh-fg);
+  font-weight: 600;
+}
+.rh-admin-content {
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 26px 32px 48px;
+  flex: 1;
+  min-width: 0;
+}
+.rh-overview {
+  padding: 16px 22px 20px;
+  margin-bottom: 32px;
+  border: 1px solid var(--rh-line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--rh-soft) 65%, var(--rh-bg));
+}
+.rh-overview-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--rh-muted);
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+.rh-overview-heading .rh-icon-button {
+  width: 26px;
+  height: 26px;
+}
+.rh-admin-stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.rh-stat {
+  text-align: left;
+  padding: 0 22px;
+  border-left: 1px solid var(--rh-line) !important;
+}
+.rh-stat:first-child {
+  padding-left: 0;
+  border: 0 !important;
+}
+.rh-stat-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--rh-muted);
+}
+.rh-stat strong {
+  display: block;
+  font-size: 28px;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  font-variant-numeric: tabular-nums;
+  margin-top: 8px;
+}
+.rh-stat:hover strong {
+  color: var(--rh-accent);
+}
+.rh-stat-alert strong {
+  color: var(--rh-danger);
+}
+.rh-panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.rh-panel-heading h1 {
+  font-size: 24px;
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: -0.7px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.rh-panel-heading p {
+  color: var(--rh-muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+.rh-heading-count {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 24px;
+  height: 23px;
+  padding: 0 7px;
+  color: var(--rh-muted);
+  border: 1px solid var(--rh-line);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.rh-admin-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 18px 32px;
+  border-top: 1px solid var(--rh-line);
+  color: var(--rh-faint);
+  font-size: 11px;
+}
+.rh-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: fixed;
+  z-index: 10000;
+  bottom: 30px;
+  left: calc(50% + 100px);
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100vw - 40px);
+  padding: 10px 12px 10px 16px;
+  background: var(--rh-bg);
+  border: 1px solid var(--rh-line);
+  border-radius: 12px;
+  color: var(--rh-fg);
+  box-shadow: 0 8px 40px #0002;
+  font-size: 13px;
+}
+.rh-toast > svg {
+  color: var(--rh-success);
+}
+.rh-toast[data-tone='danger'] > svg {
+  color: var(--rh-danger);
+}
+.rh-toast .rh-icon-button {
+  width: 27px;
+  height: 27px;
+  margin-left: 8px;
+}

@@ -1,0 +1,36 @@
+.rh-overview-metric {
+  --rh-spotlight-color: var(--rh-primary);
+  isolation: isolate;
+}
+.rh-overview-metric[data-tone='secondary'] {
+  --rh-spotlight-color: var(--rh-secondary);
+}
+.rh-overview-metric::before,
+.rh-overview-metric::after {
+  content: '';
+  position: absolute;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.rh-overview-metric::before {
+  inset: -1px;
+  z-index: -2;
+  background: radial-gradient(
+    400px circle at var(--rh-spotlight-x, 50%) var(--rh-spotlight-y, 50%),
+    var(--rh-spotlight-color),
+    transparent 70%
+  );
+}
+.rh-overview-metric::after {
+  inset: 0;
+  z-index: -1;
+  background: color-mix(in srgb, var(--rh-bg) 90%, transparent);
+}
+@media (hover: hover) and (pointer: fine) {
+  .rh-overview-metric:hover::before,
+  .rh-overview-metric:hover::after {
+    opacity: 1;
+  }
+}

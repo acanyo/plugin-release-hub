@@ -1,0 +1,37 @@
+.rh-root.rh-admin-modal {
+  background: transparent;
+}
+.rh-halo-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+}
+.rh-halo-modal-body {
+  padding: 0 24px 24px;
+}
+.rh-halo-modal-description {
+  margin: 0 0 20px !important;
+  color: var(--rh-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.rh-halo-modal-footer > div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+}
+/* FormKit's own styles apply to its Secret selector, dropdown and management modals. */
+.rh-halo-secret-field {
+  margin-bottom: 18px;
+}
+.rh-halo-secret-field :where(input, button) {
+  font-family: inherit;
+}
+@media (max-width: 560px) {
+  .rh-halo-modal-body {
+    padding: 0 20px 20px;
+  }
+}

@@ -1,0 +1,124 @@
+@container release-console (max-width: 1040px) {
+  .rh-admin-header {
+    padding: 0 24px;
+  }
+  .rh-admin-tabs {
+    padding: 0 24px;
+  }
+  .rh-admin-content {
+    padding: 24px;
+  }
+  .rh-stat {
+    padding-inline: 16px;
+  }
+  .rh-table-toolbar {
+    flex-wrap: wrap;
+  }
+  .rh-console-search input {
+    width: 160px;
+  }
+  .rh-table-subtitle {
+    max-width: 225px;
+  }
+}
+@container release-console (max-width: 660px) {
+  .rh-admin-header {
+    min-height: 70px;
+    padding: 16px 20px;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .rh-admin-brand strong {
+    font-size: 18px;
+  }
+  .rh-admin-header .rh-header-actions {
+    gap: 4px;
+  }
+  .rh-admin-header .rh-quiet-button span {
+    display: none;
+  }
+  .rh-admin-tabs {
+    gap: 24px;
+    padding-inline: 20px;
+  }
+  .rh-admin-content {
+    padding: 22px 20px 36px;
+  }
+  .rh-overview {
+    padding: 12px 15px 16px;
+    margin-bottom: 26px;
+  }
+  .rh-admin-stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px 0;
+  }
+  .rh-stat {
+    padding: 0 12px;
+  }
+  .rh-stat:nth-child(4) {
+    border-left: 0 !important;
+    padding-left: 0;
+  }
+  .rh-stat-label {
+    font-size: 11px;
+  }
+  .rh-stat-label svg {
+    display: none;
+  }
+  .rh-stat strong {
+    font-size: 24px;
+  }
+  .rh-panel-heading {
+    gap: 14px;
+    align-items: start;
+  }
+  .rh-panel-heading h1 {
+    font-size: 22px;
+  }
+  .rh-panel-heading p {
+    max-width: 280px;
+    font-size: 12px;
+  }
+  .rh-table-toolbar {
+    padding: 14px;
+    gap: 12px;
+  }
+  .rh-table-filters {
+    width: 100%;
+  }
+  .rh-console-search {
+    flex: 1;
+    min-width: 140px;
+  }
+  .rh-console-search input {
+    width: 100%;
+  }
+  .rh-table-foot {
+    padding: 13px 14px;
+  }
+  .rh-table-foot > span:last-child {
+    display: none;
+  }
+  .rh-admin-footer {
+    padding: 18px 20px;
+  }
+}
+@media (max-width: 767px) {
+  .rh-toast {
+    left: 50%;
+    bottom: 20px;
+  }
+}
+@container release-console (max-width: 660px) {
+  .rh-admin-tabs {
+    scrollbar-width: none;
+  }
+  .rh-admin-tabs::-webkit-scrollbar {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .rh-admin-footer {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+}

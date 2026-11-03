@@ -1,0 +1,110 @@
+.rh-public {
+  --rh-ease: cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+.rh-public :is(button, a, input, select, .rh-overview-metric, .rh-version-table tr) {
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s var(--rh-ease);
+}
+.rh-public .rh-segment-indicator,
+.rh-public .rh-view-indicator {
+  transition:
+    transform 0.28s var(--rh-ease),
+    background-color 0.2s ease;
+}
+.rh-public .rh-segmented button {
+  transition: color 0.2s ease;
+}
+.rh-public .rh-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--rh-primary) 18%, transparent);
+}
+.rh-public .rh-primary:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: none;
+}
+.rh-public .rh-secondary:active,
+.rh-public .rh-icon-button:active {
+  transform: scale(0.95);
+}
+.rh-public .rh-release-links a:hover > svg,
+.rh-public .rh-subscribe-link:hover > svg:last-child {
+  transform: translate(2px, -1px);
+}
+.rh-public .rh-release-links svg,
+.rh-public .rh-subscribe-link > svg {
+  transition: transform 0.2s var(--rh-ease);
+}
+.rh-public .rh-asset:hover > svg:last-child {
+  transform: translateY(3px);
+}
+.rh-public .rh-asset > svg:last-child {
+  transition: transform 0.22s var(--rh-ease);
+}
+.rh-public .rh-expand-button > span {
+  transition: transform 0.25s var(--rh-ease);
+}
+.rh-public .rh-results {
+  transition: opacity 0.18s ease;
+}
+.rh-public .rh-version-table tbody tr {
+  animation: rh-row-in 0.35s var(--rh-ease) both;
+  animation-delay: calc(min(var(--row-index), 6) * 35ms);
+}
+.rh-public .rh-release-skeleton span {
+  animation: rh-skeleton 1.35s ease-in-out infinite alternate;
+}
+.rh-public .rh-methods button {
+  position: relative;
+}
+.rh-public .rh-methods button:not(.active):hover {
+  background: var(--rh-soft);
+  border-color: var(--rh-primary);
+}
+.rh-public .rh-subscription-panel {
+  animation: rh-panel-in 0.22s var(--rh-ease);
+}
+@keyframes rh-row-in {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes rh-skeleton {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes rh-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rh-public *,
+  .rh-public *::before,
+  .rh-public *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .rh-public .rh-primary:hover,
+  .rh-public .rh-overview-metric:hover {
+    transform: none;
+  }
+}

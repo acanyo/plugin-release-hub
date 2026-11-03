@@ -1,0 +1,31 @@
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: release-hub-public
+  labels:
+    halo.run/role-template: "true"
+    halo.run/hidden: "true"
+    rbac.authorization.halo.run/aggregate-to-anonymous: "true"
+    rbac.authorization.halo.run/aggregate-to-authenticated: "true"
+rules:
+  - apiGroups: [api.release-hub.xhhao.com]
+    resources: [projects, releases, settings]
+    verbs: [get, list]
+  - apiGroups: [api.release-hub.xhhao.com]
+    resources: [subscriptions, subscriptions/verify, subscriptions/unsubscribe]
+    verbs: [create]
+---
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: release-hub-manage
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/module: 版本中心
+    rbac.authorization.halo.run/display-name: 管理仓库与版本订阅
+    rbac.authorization.halo.run/ui-permissions: '["plugin:release-hub:manage"]'
+rules:
+  - apiGroups: [console.api.release-hub.xhhao.com]
+    resources: [stats, projects, projects/sync, accounts, accounts/repositories, accounts/import, subscriptions, subscriptions/state, subscriptions/test, webhooks, deliveries, deliveries/retry, sync-logs]
+    verbs: [get, list, create, update, delete]

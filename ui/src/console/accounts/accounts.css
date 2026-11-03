@@ -1,0 +1,135 @@
+.rh-account-proxy-note {
+  margin: 16px 0;
+  color: var(--rh-muted);
+  font-size: 12px;
+}
+.rh-account-proxy-note a,
+.rh-page-note a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.rh-repository-search {
+  width: 100%;
+  margin-bottom: 14px;
+}
+.rh-repository-search input {
+  flex: 1;
+  width: 100%;
+}
+.rh-repository-selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--rh-muted);
+  font-size: 12px;
+}
+.rh-repository-selection .rh-checkbox {
+  margin-block: 8px 12px;
+}
+.rh-repository-list {
+  border: 1px solid var(--rh-line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.rh-repository-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  cursor: pointer;
+}
+.rh-repository-choice + .rh-repository-choice {
+  border-top: 1px solid var(--rh-line);
+}
+.rh-repository-choice:hover {
+  background: var(--rh-soft);
+}
+.rh-repository-choice:has(input:checked) {
+  background: var(--rh-accent-soft);
+}
+.rh-repository-added {
+  opacity: 0.6;
+  cursor: default;
+}
+.rh-repository-choice > input {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  accent-color: var(--rh-accent);
+}
+.rh-repository-choice-body {
+  min-width: 0;
+  flex: 1;
+}
+.rh-repository-choice-body > :is(strong, span, small) {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rh-repository-choice-body strong {
+  font-size: 13px;
+  font-weight: 550;
+}
+.rh-repository-choice-body > span {
+  color: var(--rh-muted);
+  font-size: 12px;
+  margin-top: 3px;
+}
+.rh-repository-choice-body > small {
+  white-space: normal;
+  font-size: 12px;
+  margin-top: 5px;
+}
+.rh-repository-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
+  max-width: 130px;
+}
+.rh-repository-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 30px;
+  color: var(--rh-muted);
+  font-size: 13px;
+}
+.rh-repository-list .rh-empty {
+  min-height: 180px;
+  padding: 30px 20px;
+}
+.rh-repository-more {
+  margin: 14px 0;
+}
+.rh-repository-import-settings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 24px;
+  margin-top: 20px;
+}
+.rh-repository-import-settings .rh-field {
+  margin-bottom: 6px;
+  max-width: 200px;
+}
+.rh-repository-import-settings .rh-checkbox {
+  margin: 16px 0 0;
+}
+@media (max-width: 560px) {
+  .rh-repository-selection {
+    flex-wrap: wrap;
+    gap: 0 12px;
+    margin-bottom: 10px;
+  }
+  .rh-repository-choice {
+    gap: 9px;
+    padding: 12px;
+  }
+  .rh-repository-tags {
+    max-width: 68px;
+  }
+}

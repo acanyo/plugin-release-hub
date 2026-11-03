@@ -1,0 +1,120 @@
+/* Halo Releases uses slate surfaces, a primary brand accent and a secondary accent. */
+.rh-root.rh-root.rh-public {
+  --rh-bg: #fff;
+  --rh-heading: #0f172a;
+  --rh-fg: #334155;
+  --rh-muted: #64748b;
+  --rh-faint: #94a3b8;
+  --rh-line: #e2e8f0;
+  --rh-soft: #f1f5f9;
+  --rh-hover: #e9eff6;
+  --rh-primary-soft: color-mix(in srgb, var(--rh-primary) 10%, var(--rh-bg));
+  --rh-secondary-soft: color-mix(in srgb, var(--rh-secondary) 10%, var(--rh-bg));
+  --rh-accent: var(--rh-primary-text);
+  --rh-accent-soft: var(--rh-primary-soft);
+  --rh-success: var(--rh-primary-text);
+}
+.rh-root.rh-public[data-theme='dark'] {
+  --rh-bg: #0f172a;
+  --rh-heading: #f1f5f9;
+  --rh-fg: #cbd5e1;
+  --rh-muted: #94a3b8;
+  --rh-faint: #718096;
+  --rh-line: #283549;
+  --rh-soft: #1e293b;
+  --rh-hover: #26354a;
+  --rh-primary-soft: color-mix(in srgb, var(--rh-primary) 14%, var(--rh-bg));
+  --rh-secondary-soft: color-mix(in srgb, var(--rh-secondary) 15%, var(--rh-bg));
+}
+.rh-root.rh-public .rh-primary {
+  color: var(--rh-primary-ink);
+  background: var(--rh-primary);
+  border-color: var(--rh-primary);
+  border-radius: 9px;
+  min-height: 38px;
+  font-size: 13px;
+  padding: 8px 13px;
+  font-weight: 550;
+}
+.rh-root.rh-public .rh-primary:not(:disabled):hover {
+  opacity: 1;
+  background: color-mix(in srgb, var(--rh-primary) 90%, var(--rh-primary-ink));
+  border-color: color-mix(in srgb, var(--rh-primary) 90%, var(--rh-primary-ink));
+}
+.rh-root.rh-public .rh-secondary {
+  border-radius: 9px;
+  color: var(--rh-fg);
+  font-size: 13px;
+  padding: 7px 13px;
+  min-height: 36px;
+}
+.rh-root.rh-public .rh-secondary:not(:disabled):hover {
+  border-color: color-mix(in srgb, var(--rh-primary) 40%, var(--rh-line));
+  color: var(--rh-primary-text);
+  background: var(--rh-primary-soft);
+}
+.rh-root.rh-public .rh-text-link {
+  color: var(--rh-primary-text);
+  font-size: 13px;
+}
+.rh-root.rh-public .rh-text-link:hover {
+  color: var(--rh-secondary-text);
+}
+.rh-root.rh-public :where(a, button, input, select, textarea):focus-visible {
+  outline-color: var(--rh-primary-text);
+  outline-offset: 3px;
+}
+.rh-root.rh-public .rh-search:focus-within {
+  border-color: var(--rh-primary);
+  box-shadow: 0 0 0 3px var(--rh-primary-soft);
+}
+.rh-root.rh-public .rh-search input:focus-visible {
+  outline: none;
+}
+.rh-root.rh-public .rh-field :is(input, select, textarea):focus {
+  border-color: var(--rh-primary);
+  outline: 2px solid var(--rh-primary-soft);
+  outline-offset: 1px;
+}
+.rh-root.rh-public .rh-checkbox input {
+  accent-color: var(--rh-primary);
+}
+.rh-root.rh-public .rh-badge {
+  color: var(--rh-primary-text);
+  background: var(--rh-primary-soft);
+}
+.rh-root.rh-public .rh-badge.rh-pre {
+  color: var(--rh-secondary-text);
+  background: var(--rh-secondary-soft);
+}
+.rh-root.rh-public .rh-methods button.active {
+  color: var(--rh-primary-text);
+  border-color: var(--rh-primary);
+  background: var(--rh-primary-soft);
+}
+.rh-root.rh-public .rh-icon-button:hover {
+  color: var(--rh-primary-text);
+  background: var(--rh-primary-soft);
+}
+.rh-root.rh-public .rh-dialog {
+  border-radius: 14px;
+}
+.rh-root.rh-public .rh-dialog-head h2 {
+  color: var(--rh-heading);
+}
+.rh-root.rh-public .rh-dialog-body > .rh-muted {
+  font-size: 13px;
+}
+.rh-root.rh-public .rh-field input[readonly] {
+  font:
+    12px/1.7 ui-monospace,
+    monospace;
+}
+.rh-root.rh-public .rh-empty-icon {
+  color: var(--rh-primary-text);
+  background: var(--rh-primary-soft);
+  border-color: color-mix(in srgb, var(--rh-primary) 18%, var(--rh-line));
+}
+.rh-root.rh-public .rh-empty h2 {
+  color: var(--rh-heading);
+}

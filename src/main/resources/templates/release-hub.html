@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{layout :: html(head = ~{::head}, content = ~{::content})}">
+<th:block th:fragment="head">
+  <title>版本中心 - [[${site.title}]]</title>
+  <meta name="referrer" content="no-referrer" />
+  <link rel="alternate" type="application/rss+xml" title="版本中心 RSS" href="/releases/rss.xml" />
+  <link rel="alternate" type="application/atom+xml" title="版本中心 Atom" href="/releases/atom.xml" />
+  <link rel="stylesheet" href="/plugins/release-hub/assets/frontend/release-hub.css" />
+</th:block>
+<th:block th:fragment="content">
+  <release-hub-page id="release-hub"><p style="padding:48px;text-align:center">正在加载版本中心…</p></release-hub-page>
+  <noscript>版本中心需要 JavaScript。你也可以通过 <a href="/releases/rss.xml">RSS</a> 或 <a href="/releases/atom.xml">Atom</a> 订阅更新。</noscript>
+  <script type="module" src="/plugins/release-hub/assets/frontend/release-hub.js"></script>
+</th:block>
+</html>

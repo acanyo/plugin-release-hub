@@ -1,0 +1,24 @@
+# Refer https://docs.halo.run/developer-guide/plugin/basics/manifest
+
+apiVersion: plugin.halo.run/v1alpha1
+kind: Plugin
+metadata:
+  # The name defines how the plugin is invoked, A unique name
+  name: release-hub
+spec:
+  enabled: true
+  requires: ">=2.27.0"
+  author:
+    name: Handsome
+    website: https://www.xhhao.com
+  logo: logo.svg
+  homepage: https://www.xhhao.com
+  repo: https://github.com/acanyo/plugin-release-hub
+  issues: https://github.com/acanyo/plugin-release-hub/issues
+  displayName: "版本中心"
+  description: "聚合 GitHub、Gitee、GitLab、CNB 版本动态，提供更新日志、附件下载及 RSS、邮件、Webhook 订阅，自动识别 Halo 插件和主题名称。"
+  settingName: release-hub-settings
+  configMapName: release-hub-config
+  license:
+    - name: "GPL-3.0"
+      url: "https://github.com/acanyo/plugin-release-hub/blob/main/LICENSE"
