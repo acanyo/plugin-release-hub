@@ -34,7 +34,7 @@ class WebhookTest {
             });
         }).build());
         var secrets = mock(SecretStore.class); when(secrets.read(anyString(), eq("signingKey"))).thenReturn(Mono.just("a-long-test-signing-key-42"));
-        var settings = mock(HubSettings.class); var general = new HubSettings.General(); general.setSiteUrl("https://example.com");
+        var settings = mock(HubSettings.class); var general = new HubSettings.General(); general.setSiteUrl("https://example.com"); general.setPageUrl("https://example.com/updates");
         when(settings.general()).thenReturn(Mono.just(general));
         return new WebhookChannel(outbound, secrets, settings, new ObjectMapper());
     }

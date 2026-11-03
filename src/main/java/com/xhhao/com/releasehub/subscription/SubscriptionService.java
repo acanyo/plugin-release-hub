@@ -28,7 +28,7 @@ public class SubscriptionService {
         throttle.check(HubStore.id("email", email), 3, 3600000);
         return settings.mail().flatMap(mail -> {
             if (!mail.isEnabled()) return Mono.error(new IllegalArgumentException("邮件订阅暂未开放"));
-            return settings.general().doOnNext(HubSettings.General::baseUrl).then(validateProjects(input.projects()));
+            return settings.general().doOnNext(com.xhhao.com.releasehub.web.PublishedPageLinks::page).then(validateProjects(input.projects()));
         }).flatMap(projects -> {
             String id = HubStore.id("email", email + ":" + String.join(",", projects) + ":" + input.includePrerelease());
             return store.client.fetch(Subscription.class, id).flatMap(existing -> {

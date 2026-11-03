@@ -3,6 +3,7 @@ package com.xhhao.com.releasehub.notification;
 import com.xhhao.com.releasehub.config.HubSettings;
 import com.xhhao.com.releasehub.model.*;
 import com.xhhao.com.releasehub.security.*;
+import com.xhhao.com.releasehub.web.PublishedPageLinks;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.HtmlUtils;
 import reactor.core.publisher.Mono;
@@ -22,13 +23,13 @@ public class EmailChannel implements NotificationChannel {
             if (!mail.isEnabled()) return Mono.error(new NotificationChannel.Failure("邮件渠道已停用"));
             return Mono.zip(settings.general(), tokens.issue(sub, "unsubscribe")).flatMap(values -> {
                 var general = values.getT1();
-                String unsubscribe = general.baseUrl() + "/releases/unsubscribe?token=" + values.getT2();
+                String unsubscribe = PublishedPageLinks.action(general, "unsubscribe", values.getT2());
                 return (verification ? tokens.issue(sub, "verify") : Mono.just(values.getT2())).map(token -> {
-                    String url = general.baseUrl() + "/releases/" + (verification ? "verify" : "unsubscribe") + "?token=" + token;
+                    String url = PublishedPageLinks.action(general, verification ? "verify" : "unsubscribe", token);
                     String subject = verification ? "确认订阅 · " + general.getBrandName() : "TEST".equals(delivery.getSpec().getType())
                         ? "测试通知 · " + general.getBrandName() : mail.getSubject().replace("{project}", project.displayName())
                             .replace("{version}", release.getSpec().getTag());
-                    String detailUrl = release == null ? general.baseUrl() + "/releases" : general.baseUrl() + "/releases/versions/" + release.getMetadata().getName();
+                    String detailUrl = release == null ? PublishedPageLinks.page(general) : PublishedPageLinks.release(general, release.getMetadata().getName());
                     String content = verification ? "请确认这是你本人的订阅请求。确认后，你将收到所选项目的版本更新。链接 24 小时内有效。如果不是你发起的请求，请忽略此邮件。"
                         : release == null ? "这是一封来自版本中心的测试通知，邮件渠道已正常连接。" : release.getSpec().getSummary();
                     String heading = verification ? "确认你的版本订阅" : release == null ? "邮件通知已就绪" : project.displayName() + " " + release.getSpec().getTag();

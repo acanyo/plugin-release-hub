@@ -2,8 +2,9 @@
     import { publicClient } from '../api/client'
     import { errorMessage } from '../shared/format'
     import Icon from '../shared/Icon.svelte'
+    import { pageLink } from '../shared/page-links'
     let { unsubscribe }: { unsubscribe: boolean } = $props()
-    const token = new URLSearchParams(location.search).get('token') || ''
+    const token = new URLSearchParams(location.search).get('rh-token') || ''
     let busy = $state(false),
         complete = $state(false),
         error = $state('')
@@ -15,7 +16,7 @@
             if (unsubscribe) await publicClient().unsubscribeReleaseEmail(params)
             else await publicClient().verifyReleaseEmail(params)
             complete = true
-            history.replaceState({}, '', location.pathname)
+            history.replaceState(history.state, '', pageLink())
         } catch (e) {
             error = errorMessage(e)
         } finally {
@@ -51,5 +52,5 @@
             >{busy ? '正在处理…' : unsubscribe ? '确认取消订阅' : '确认订阅'}</button
         >{/if}
     {#if error}<p role="alert" class="rh-error">{error}</p>{/if}
-    <a class="rh-text-link" href="/releases">返回版本中心 <Icon name="arrow" size={15} /></a>
+    <a class="rh-text-link" href={pageLink()}>返回版本中心 <Icon name="arrow" size={15} /></a>
 </div>

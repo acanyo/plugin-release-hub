@@ -44,6 +44,7 @@ public class HubSettings {
         private String description = "每一次更新，都在这里。";
         private String logoUrl = "";
         private String siteUrl = "";
+        private String pageUrl = "";
         public String baseUrl() {
             return SafeUrls.https(siteUrl).toASCIIString().replaceAll("/+$", "");
         }

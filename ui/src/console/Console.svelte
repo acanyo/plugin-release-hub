@@ -3,7 +3,14 @@
     import { onMount, setContext, untrack } from 'svelte'
     import { HALO_UI, type HaloUi } from './halo-ui/types'
     import type { AxiosInstance } from 'axios'
-    import { adminClient, type Project, type Stats, type AccountView } from '../api/client'
+    import {
+        adminClient,
+        publicClient,
+        type Project,
+        type Stats,
+        type AccountView,
+    } from '../api/client'
+    import PublishingGuide from './PublishingGuide.svelte'
     import { errorMessage } from '../shared/format'
     import Projects from './Projects.svelte'
     import Accounts from './accounts/Accounts.svelte'
@@ -28,6 +35,7 @@
     ]
     const initialTab = new URLSearchParams(location.search).get('tab') || 'projects'
     let projects = $state<Project[]>([]),
+        pageUrl = $state(''),
         accounts = $state<AccountView[]>([]),
         stats = $state<Stats>({})
     let selected = $state(tabs.some((t) => t.id === initialTab) ? initialTab : 'projects')
@@ -69,14 +77,16 @@
         if (refreshing) return
         refreshing = true
         try {
-            const [p, s, a] = await Promise.all([
+            const [p, s, a, publicSettings] = await Promise.all([
                 api.listManagedProjects(),
                 api.getReleaseHubStats(),
                 api.listRepositoryAccounts(),
+                publicClient().getReleaseHubSettings(),
             ])
             projects = p.data
             stats = s.data
             accounts = a.data
+            pageUrl = publicSettings.data.pageUrl || ''
             pageError = ''
         } catch (e) {
             pageError = errorMessage(e)
@@ -128,9 +138,15 @@
                 aria-label="插件设置"
                 title="插件设置"><Icon name="settings" size={16} /><span>插件设置</span></a
             >
-            <a class="rh-secondary" href="/releases" target="_blank" rel="noopener noreferrer"
-                >查看发布页 <Icon name="arrow" size={15} /></a
-            >
+            {#if pageUrl}<a
+                    class="rh-secondary"
+                    href={pageUrl}
+                    target="_blank"
+                    rel="noopener noreferrer">查看发布页 <Icon name="arrow" size={15} /></a
+                >
+            {:else}<a class="rh-secondary" href="/console/single-pages"
+                    >创建发布页面 <Icon name="plus" size={15} /></a
+                >{/if}
         </div>
     </header>
     <div class="rh-admin-tabs" role="tablist" aria-label="版本中心管理">
@@ -150,6 +166,7 @@
         {/each}
     </div>
     <main class="rh-admin-content">
+        <PublishingGuide {pageUrl} />
         <section class="rh-overview" aria-label="版本中心概览">
             <div class="rh-overview-heading">
                 <span>工作区概览</span><button
@@ -192,6 +209,7 @@
                     <span class="rh-spinner"></span>正在加载版本中心…
                 </div>
             {:else if selected === 'projects'}<Projects
+                    {pageUrl}
                     {api}
                     {projects}
                     {accounts}

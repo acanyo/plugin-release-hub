@@ -1,5 +1,7 @@
 <script lang="ts">
-    import { onMount } from 'svelte'
+    import { onMount, untrack } from 'svelte'
+    import { embedOptions, type EmbedOptions } from '../shared/embed-options'
+    import { pageLink } from '../shared/page-links'
     import {
         publicClient,
         type ProjectView,
@@ -22,13 +24,19 @@
     import { reveal } from './motion/reveal'
     import './frontend.css'
 
+    let { options, primary = true }: { options: EmbedOptions; primary?: boolean } = $props()
+    const initial = untrack(() => options)
+    const params = new URLSearchParams(untrack(() => primary) ? location.search : '')
+    const detailId = params.get('rh-release') || ''
+    const action = params.get('rh-action') || ''
+    const tokenAction = action === 'verify' || action === 'unsubscribe'
+    const id = $props.id()
+    let resultsElement = $state<HTMLDivElement>()
     const api = publicClient()
-    const route = location.pathname.split('/').filter(Boolean)
-    const params = new URLSearchParams(location.search)
-    const detailId = route[1] === 'versions' ? route[2] : undefined
-    const tokenAction = route[1] === 'verify' || route[1] === 'unsubscribe'
-    let project = $state(route[1] === 'projects' ? route[2] || '' : params.get('project') || '')
-    let view = $state(params.get('view') === 'list' ? 'list' : 'timeline')
+    let project = $state(
+        initial.project || embedOptions({ project: params.get('rh-project') }).project,
+    )
+    let view = $state<string>(initial.view)
     let projects = $state<ProjectView[]>([]),
         items = $state<ReleaseView[]>([])
     let settings = $state<PublicSettings>({
@@ -37,13 +45,9 @@
         emailEnabled: false,
     })
     let total = $state(0),
-        page = $state(Math.min(100000, Math.max(1, Math.trunc(Number(params.get('page'))) || 1)))
-    let channel = $state(
-            ['all', 'stable', 'prerelease'].includes(params.get('channel') || '')
-                ? params.get('channel')!
-                : 'all',
-        ),
-        keyword = $state(params.get('keyword') || '')
+        page = $state(1)
+    let channel = $state<string>(initial.channel),
+        keyword = $state('')
     let loading = $state(true),
         error = $state(''),
         subscribe = $state(false),
@@ -52,15 +56,6 @@
         overviewLoading = $state(true),
         contentKey = $state(0)
     const selected = $derived(projects.find((p) => p.name === project))
-    const pageTitle = $derived(
-        detailId && items[0]
-            ? `${items[0].tag} · ${items[0].projectName}`
-            : view === 'list'
-              ? '所有版本'
-              : selected
-                ? `${selected.displayName} 更新日志`
-                : '更新日志',
-    )
     let sequence = 0,
         overviewSequence = 0
 
@@ -114,42 +109,25 @@
             if (request === overviewSequence) overviewLoading = false
         }
     }
-    function syncUrl() {
-        const query = new URLSearchParams()
-        if (view === 'list') query.set('view', 'list')
-        if (keyword) query.set('keyword', keyword)
-        if (channel !== 'all') query.set('channel', channel)
-        if (page > 1) query.set('page', String(page))
-        const path = project ? `/releases/projects/${encodeURIComponent(project)}` : '/releases'
-        history.replaceState(history.state, '', path + (query.size ? '?' + query.toString() : ''))
-    }
     function navigate(next: string) {
-        if (detailId || tokenAction) {
-            location.assign(`/releases${next === 'list' ? '?view=list' : ''}`)
-            return
-        }
         if (view === next) return
         view = next
-        syncUrl()
         contentKey++
     }
     function filter(next?: string) {
         if (next) channel = next
         page = 1
-        syncUrl()
         void load()
     }
     function changeProject() {
         page = 1
-        syncUrl()
         void load()
         void loadOverview()
     }
     function paginate(next: number) {
         page = next
-        syncUrl()
         void load()
-        document.getElementById('rh-release-results')?.scrollIntoView({
+        resultsElement?.scrollIntoView({
             behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
             block: 'start',
         })
@@ -192,21 +170,7 @@
                     if (!detailId) void loadOverview()
                 } else loading = false
             })
-        const pop = () => {
-            if (detailId || tokenAction) return
-            const parts = location.pathname.split('/').filter(Boolean),
-                query = new URLSearchParams(location.search)
-            project = parts[1] === 'projects' ? parts[2] || '' : ''
-            view = query.get('view') === 'list' ? 'list' : 'timeline'
-            keyword = query.get('keyword') || ''
-            channel = query.get('channel') || 'all'
-            page = Math.max(1, Math.trunc(Number(query.get('page'))) || 1)
-            void load()
-            void loadOverview()
-        }
-        addEventListener('popstate', pop)
         return () => {
-            removeEventListener('popstate', pop)
             media.removeEventListener('change', updateTheme)
             themeObserver.disconnect()
             sequence++
@@ -215,21 +179,16 @@
     })
 </script>
 
-<svelte:head><title>{pageTitle} · {settings.brandName}</title></svelte:head>
 <div
     class="rh-root rh-public"
     data-theme={dark ? 'dark' : 'light'}
     style={paletteStyle(settings.primaryColor, settings.secondaryColor, dark)}
 >
     <main class="rh-shell">
-        {#if tokenAction}<ConfirmAction unsubscribe={route[1] === 'unsubscribe'} />
+        {#if tokenAction}<ConfirmAction unsubscribe={action === 'unsubscribe'} />
         {:else if detailId}
             <div class="rh-detail-nav" use:reveal={{ distance: 8 }}>
-                <a
-                    class="rh-back"
-                    href={items[0]?.project
-                        ? `/releases/projects/${items[0].project}`
-                        : '/releases'}><Icon name="back" size={15} />返回更新日志</a
+                <a class="rh-back" href={pageLink()}><Icon name="back" size={15} />返回更新日志</a
                 ><button class="rh-quiet-button" onclick={() => (subscribe = true)}
                     ><Icon name="bell" size={15} />订阅这个项目</button
                 >
@@ -242,12 +201,12 @@
                     <ReleaseEntry release={items[0]} detail />
                 </div>{/if}
         {:else}
-            <ReleaseOverview
-                {...overview}
-                projectCount={projects.length}
-                loading={overviewLoading}
-            />
-            <div id="rh-release-results" class="rh-release-workspace">
+            {#if initial.overview}<ReleaseOverview
+                    {...overview}
+                    projectCount={projects.length}
+                    loading={overviewLoading}
+                />{/if}
+            <div bind:this={resultsElement!} class="rh-release-workspace">
                 <div class="rh-page-heading" use:reveal={{ delay: 100, distance: 10 }}>
                     <div>
                         <h1>
@@ -262,7 +221,7 @@
                         /></button
                     >
                 </div>
-                <ReleaseViewTabs value={view} change={navigate} />
+                <ReleaseViewTabs {id} value={view} change={navigate} />
                 <div class="rh-filter-bar" use:reveal={{ delay: 140, distance: 8 }}>
                     <SegmentedControl
                         label="版本类型"
@@ -275,14 +234,14 @@
                         change={filter}
                     />
                     <div class="rh-filter-fields">
-                        <ProjectSelect
-                            {projects}
-                            value={project}
-                            change={(next) => {
-                                project = next
-                                changeProject()
-                            }}
-                        />
+                        {#if !initial.project}<ProjectSelect
+                                {projects}
+                                value={project}
+                                change={(next) => {
+                                    project = next
+                                    changeProject()
+                                }}
+                            />{/if}
                         <form
                             class="rh-search"
                             onsubmit={(event) => {
@@ -313,10 +272,10 @@
                     >
                 </div>
                 <div
-                    id="rh-release-view"
+                    id={`${id}-view`}
                     class="rh-results"
                     role="tabpanel"
-                    aria-labelledby={`rh-view-${view}`}
+                    aria-labelledby={`${id}-${view}`}
                     tabindex="0"
                     class:rh-updating={loading && !!items.length}
                     aria-busy={loading}
@@ -362,7 +321,7 @@
             </div>
         {/if}
         <footer class="rh-footer">
-            <a class="rh-footer-brand" href="/releases"
+            <a class="rh-footer-brand" href={pageLink()}
                 ><Icon name="box" size={17} />{settings.brandName}</a
             >
             <div>

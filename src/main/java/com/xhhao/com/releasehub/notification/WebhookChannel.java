@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xhhao.com.releasehub.config.HubSettings;
 import com.xhhao.com.releasehub.model.*;
 import com.xhhao.com.releasehub.security.*;
+import com.xhhao.com.releasehub.web.PublishedPageLinks;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class WebhookChannel implements NotificationChannel {
                 "project", project == null ? Map.of() : Map.of("id", project.getMetadata().getName(), "name", project.displayName()),
                 "release", release == null ? Map.of() : Map.of("tag", release.getSpec().getTag(), "title", release.getSpec().getTitle(),
                     "publishedAt", release.getSpec().getPublishedAt().toString(), "prerelease", release.getSpec().isPrerelease(),
-                    "summary", release.getSpec().getSummary(), "url", tuple.getT2().baseUrl() + "/releases/versions/" + release.getMetadata().getName()));
+                    "summary", release.getSpec().getSummary(), "url", PublishedPageLinks.release(tuple.getT2(), release.getMetadata().getName())));
             String body;
             try { body = mapper.writeValueAsString(event); } catch (Exception e) { return Mono.error(e); }
             return http.client().post().uri(target).contentType(MediaType.APPLICATION_JSON)

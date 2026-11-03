@@ -6,3 +6,15 @@ rules:
   - path: /frontend/**
     file:
       directory: static/frontend
+  - path: /embed/**
+    file:
+      directory: static/embed
+---
+apiVersion: plugin.halo.run/v1alpha1
+kind: ExtensionDefinition
+metadata:
+  name: release-hub-theme-head
+spec:
+  className: com.xhhao.com.releasehub.web.ReleaseHubHeadProcessor
+  extensionPointName: template-head-processor
+  displayName: 版本中心页面组件

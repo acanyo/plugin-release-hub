@@ -76,6 +76,29 @@
   border-radius: 12px;
   background: color-mix(in srgb, var(--rh-soft) 65%, var(--rh-bg));
 }
+.rh-publishing-guide {
+  margin-bottom: 24px;
+  padding: 18px 20px;
+  border: 1px solid var(--rh-line);
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.rh-publishing-guide > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rh-publishing-guide ol {
+  margin: 10px 0 14px;
+  padding-left: 20px;
+  color: var(--rh-muted);
+  list-style: decimal;
+}
+.rh-publishing-guide kbd {
+  font: inherit;
+  color: var(--rh-fg);
+}
 .rh-overview-heading {
   display: flex;
   align-items: center;

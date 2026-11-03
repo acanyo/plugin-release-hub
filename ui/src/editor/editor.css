@@ -1,0 +1,70 @@
+.rh-editor-card {
+  margin: 16px 0;
+  border: 1px solid var(--rh-line);
+  border-radius: 10px;
+  background: var(--rh-bg);
+  color: var(--rh-fg);
+  font-size: 13px;
+  overflow: hidden;
+}
+.rh-editor-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid var(--rh-line);
+}
+.rh-editor-heading > div {
+  flex: 1;
+  min-width: 0;
+}
+.rh-editor-heading strong {
+  font-size: 15px;
+}
+.rh-editor-heading p {
+  margin: 4px 0 0;
+  color: var(--rh-muted);
+  font-size: 12px;
+}
+.rh-editor-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+.rh-editor-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rh-editor-fields select {
+  width: 100%;
+  border: 1px solid var(--rh-line);
+  border-radius: 6px;
+  padding: 8px;
+  background: var(--rh-bg);
+  color: var(--rh-fg);
+}
+.rh-editor-fields .rh-editor-checkbox {
+  flex-direction: row;
+  align-items: center;
+  align-self: end;
+  padding: 9px 0;
+}
+.rh-editor-checkbox input {
+  appearance: auto;
+  width: 16px;
+  height: 16px;
+}
+.rh-editor-note {
+  margin: 0 !important;
+  padding: 0 16px 16px;
+  color: var(--rh-muted);
+  line-height: 1.7;
+}
+.rh-editor-note button {
+  text-decoration: underline;
+}
+.rh-editor-selected .rh-editor-card {
+  border-color: var(--rh-accent);
+}

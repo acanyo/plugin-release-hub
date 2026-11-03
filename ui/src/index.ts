@@ -23,4 +23,10 @@ export default definePlugin({
       },
     },
   ],
+  extensionPoints: {
+    'default:editor:extension:create': async () => {
+      const { ReleaseHubExtension } = await import('./editor/release-hub-extension')
+      return [ReleaseHubExtension]
+    },
+  },
 })

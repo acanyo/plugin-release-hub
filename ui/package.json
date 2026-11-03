@@ -12,6 +12,7 @@
   "dependencies": {
     "@halo-dev/api-client": "^2.27.0",
     "@halo-dev/components": "^2.27.0",
+    "@halo-dev/richtext-editor": "2.27.0",
     "@halo-dev/ui-shared": "^2.27.0",
     "axios": "^1.19.0",
     "bits-ui": "2.20.3",
@@ -22,11 +23,13 @@
   "devDependencies": {
     "@halo-dev/ui-plugin-bundler-kit": "^2.27.0",
     "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "@tiptap/core": "3.32.0",
     "@tsconfig/node24": "^24.0.4",
     "@tsconfig/svelte": "^5.0.8",
     "@types/node": "^24.13.3",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vue/tsconfig": "^0.9.1",
+    "jsdom": "30.0.1",
     "prettier": "3.9.6",
     "prettier-plugin-svelte": "4.1.1",
     "svelte-check": "^4.7.7",

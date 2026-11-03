@@ -85,7 +85,7 @@ class WorkflowTest {
     }
     @Test void subscriptionRequiresVerificationAndOldUnsubscribeTokenCannotAffectResubscription() {
         var settings = mock(HubSettings.class); var mail = new HubSettings.Mail(); mail.setEnabled(true);
-        var general = new HubSettings.General(); general.setSiteUrl("https://example.com");
+        var general = new HubSettings.General(); general.setSiteUrl("https://example.com"); general.setPageUrl("https://example.com/updates");
         when(settings.mail()).thenReturn(Mono.just(mail)); when(settings.general()).thenReturn(Mono.just(general));
         var tokens = new TokenService(memory.store, secrets);
         var service = new SubscriptionService(memory.store, tokens, secrets, settings, new RequestThrottle());

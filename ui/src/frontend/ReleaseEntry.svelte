@@ -4,6 +4,8 @@
     import { date, bytes, safeLink } from '../shared/format'
     import Icon from '../shared/Icon.svelte'
     import { reveal } from './motion/reveal'
+    import { releaseLink, projectLink } from '../shared/page-links'
+    const id = $props.id()
     let {
         release,
         detail = false,
@@ -52,7 +54,7 @@
     </div>
     <div class="rh-release-content">
         <div class="rh-release-meta">
-            <a class="rh-project-label" href={`/releases/projects/${release.project}`}
+            <a class="rh-project-label" href={projectLink(release.project)}
                 ><Icon name="repository" size={13} />{release.projectName}</a
             ><span class="rh-badge" class:rh-pre={release.prerelease}
                 >{release.prerelease ? '预发布' : '正式版'}</span
@@ -60,7 +62,7 @@
                 >{date(release.publishedAt, true)}</time
             >
         </div>
-        <h2><a href={`/releases/versions/${release.name}`}>{versionTitle}</a></h2>
+        <h2><a href={releaseLink(release.name)}>{versionTitle}</a></h2>
         {#if versionTitle !== release.tag}<div class="rh-version">
                 <Icon name="tag" size={13} />{release.tag}
             </div>{/if}
@@ -73,14 +75,14 @@
             class:rh-expanded={expanded}
             bind:this={content!}
         >
-            <div class="rh-prose" bind:this={inner!} id={`rh-content-${release.name}`}>
+            <div class="rh-prose" bind:this={inner!} id={`${id}-content`}>
                 {@html release.html || '<p>此版本暂无更新说明。</p>'}
             </div>
         </div>
         {#if !detail && canExpand}<button
                 class="rh-expand-button"
                 aria-expanded={expanded}
-                aria-controls={`rh-content-${release.name}`}
+                aria-controls={`${id}-content`}
                 onclick={toggle}
                 >{expanded ? '收起日志' : '展开完整日志'}<span class:rh-rotated={expanded}
                     ><Icon name="chevron" size={14} /></span
@@ -103,11 +105,11 @@
                         >{/if}{/each}
             </section>{/if}
         <div class="rh-release-links">
-            {#if !detail}<a class="rh-text-link" href={`/releases/versions/${release.name}`}
+            {#if !detail}<a class="rh-text-link" href={releaseLink(release.name)}
                     >版本详情 <Icon name="arrow" size={14} /></a
                 >{#if release.assets?.length}<a
                         class="rh-download-hint"
-                        href={`/releases/versions/${release.name}`}
+                        href={releaseLink(release.name)}
                         ><Icon name="download" size={14} />下载附件
                         <span>{release.assets.length}</span></a
                     >{/if}{:else if safeLink(release.sourceUrl)}<a

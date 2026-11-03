@@ -37,7 +37,8 @@ flowchart LR
 | `notification/` | 通知展开、持久化发送队列和渠道实现 |
 | `security/` | Secret、签名令牌、限流和出站网络边界 |
 | `content/`、`feed/` | Markdown 清洗与标准 XML Feed |
-| `web/` | 独立公开/管理 API、OpenAPI 和主题路由 |
+| `web/` | 公开/管理 API、OpenAPI、Feed 端点、用户发布页面链接与主题组件加载器 |
+| `ui/src/editor/` | 默认编辑器工具箱/斜杠命令、组件序列化与 Svelte 项目配置卡片 |
 | `ui/src/frontend/` | 公开 Svelte 页面和订阅交互 |
 | `ui/src/console/` | Svelte 管理页面及最小 Vue 桥接 |
 | `ui/src/api/generated/` | 自动生成，禁止手动维护 |
@@ -96,7 +97,7 @@ Console 的 Svelte 页面通过显式上下文接口挂载 Halo 已注册的 For
 - 平台 Token 仅用于对应平台；GitHub、Gitee、CNB 使用固定 API 域名。GitLab 可连接公网自建实例，不支持本地私网实例。
 - Gitee 按官方规范将 `access_token` 放在查询串，因此不能记录完整请求 URI。日志仅保存 HTTP 状态或异常类别。
 - 邮件发送复用 Halo 2.27 内置 `ReactiveNotifier`，系统通知设置是唯一发件配置来源；插件不再实现 SMTP 传输。`HaloEmailSender` 通过共享 `ExtensionGetter` 找到已启用的原生邮件通知器，并按目标版本 `DefaultNotifierConfigStore` 的布局只读加载系统 Secret。未配置/停用时明确失败，不记录为已发送；原生发送结果继续驱动插件的持久化重试。匿名邮箱使用 Halo `UserIdentity`，原生邮件页脚使用插件的安全退订链接。
-- 订阅令牌页面设置 `Referrer-Policy: no-referrer`，成功后移除当前页面 URL 的令牌。
+- 邮件确认与退订在用户发布的组件页面处理。主题头部在资源之前插入 `referrer=no-referrer` 和 `robots=noindex, nofollow` 元数据，成功后移除当前页面 URL 的令牌。
 
 ## 开发顺序与交付
 

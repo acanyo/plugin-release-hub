@@ -19,8 +19,14 @@ spec:
         - $formkit: url
           name: siteUrl
           label: 站点公开地址
-          help: 必填，使用完整 HTTPS 地址，用于 Feed、验证邮件和通知详情链接。
+          help: 必填，使用站点完整 HTTPS 地址，用于 RSS/Atom 订阅地址。
           validation: required|url
+        - $formkit: url
+          name: pageUrl
+          label: 已发布的版本页面地址
+          help: 在「页面」新建页面，编辑器工具箱选择「版本中心」并发布，将页面完整 HTTPS 地址填在这里。邮件确认、退订和 Feed 详情将跳转到这个页面。
+          placeholder: https://example.com/updates
+          validation: url
         - $formkit: url
           name: logoUrl
           label: Logo 地址

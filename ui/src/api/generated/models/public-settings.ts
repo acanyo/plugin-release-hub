@@ -49,6 +49,12 @@ export interface PublicSettings {
      * @type {string}
      * @memberof PublicSettings
      */
+    'pageUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PublicSettings
+     */
     'primaryColor'?: string;
     /**
      * 

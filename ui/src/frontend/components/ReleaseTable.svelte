@@ -3,6 +3,7 @@
     import Icon from '../../shared/Icon.svelte'
     import { date } from '../../shared/format'
     import { reveal } from '../motion/reveal'
+    import { releaseLink } from '../../shared/page-links'
     let { releases }: { releases: ReleaseView[] } = $props()
 </script>
 
@@ -17,7 +18,7 @@
         ><tbody
             >{#each releases as release, i}<tr style={`--row-index:${i}`}
                     ><td
-                        ><a class="rh-table-version" href={`/releases/versions/${release.name}`}
+                        ><a class="rh-table-version" href={releaseLink(release.name)}
                             >{release.tag}<span class="rh-badge" class:rh-pre={release.prerelease}
                                 >{release.prerelease ? '预发布' : '正式版'}</span
                             ></a
@@ -29,7 +30,7 @@
                     ><td
                         ><a
                             class="rh-icon-button"
-                            href={`/releases/versions/${release.name}`}
+                            href={releaseLink(release.name)}
                             aria-label={`查看 ${release.tag} 更新日志`}
                             ><Icon name="chevron" size={16} /></a
                         ></td

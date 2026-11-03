@@ -22,7 +22,7 @@ public class PublicEndpoint implements CustomEndpoint {
         this.releases = releases; this.subscriptions = subscriptions; this.settings = settings; this.throttle = throttle;
     }
     public record PublicSettings(String brandName, String description, String logoUrl, boolean emailEnabled,
-                                 String primaryColor, String secondaryColor) { }
+                                 String primaryColor, String secondaryColor, String pageUrl) { }
     @Override public RouterFunction<ServerResponse> endpoint() {
         return SpringdocRouteBuilder.route()
             .GET("projects", r -> releases.projects().flatMap(ApiSupport::ok), b -> operation(b, "listPublicProjects", "ReleaseHubPublic", ReleaseService.ProjectView[].class, null))
@@ -36,7 +36,7 @@ public class PublicEndpoint implements CustomEndpoint {
                 b -> operation(b, "getPublicRelease", "ReleaseHubPublic", ReleaseService.ReleaseView.class, null, "name"))
             .GET("settings", r -> Mono.zip(settings.general(), settings.mail(), settings.appearance()).map(t -> new PublicSettings(t.getT1().getBrandName(),
                 t.getT1().getDescription(), com.xhhao.com.releasehub.security.SafeUrls.browserLink(t.getT1().getLogoUrl()), t.getT2().isEnabled(),
-                t.getT3().primary(), t.getT3().secondary())).flatMap(ApiSupport::ok),
+                t.getT3().primary(), t.getT3().secondary(), com.xhhao.com.releasehub.security.SafeUrls.browserLink(t.getT1().getPageUrl()))).flatMap(ApiSupport::ok),
                 b -> operation(b, "getReleaseHubSettings", "ReleaseHubPublic", PublicSettings.class, null))
             .POST("subscriptions", r -> {
                 limit(r);

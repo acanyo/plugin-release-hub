@@ -1,5 +1,6 @@
 <script lang="ts">
-    let { value, change }: { value: string; change: (value: string) => void } = $props()
+    let { id, value, change }: { id: string; value: string; change: (value: string) => void } =
+        $props()
     const options = [
         { value: 'timeline', label: '更新日志' },
         { value: 'list', label: '所有版本' },
@@ -31,9 +32,9 @@
             <button
                 type="button"
                 role="tab"
-                id={`rh-view-${option.value}`}
+                id={`${id}-${option.value}`}
                 aria-selected={value === option.value}
-                aria-controls="rh-release-view"
+                aria-controls={`${id}-view`}
                 tabindex={value === option.value ? 0 : -1}
                 onclick={() => change(option.value)}
                 onkeydown={(event) => key(event, i)}>{option.label}</button

@@ -22,7 +22,7 @@ class EmailTest {
     private final Delivery delivery = new Delivery();
     EmailTest() {
         mail.setEnabled(true);
-        var general = new HubSettings.General(); general.setBrandName("<script>unsafe</script>"); general.setSiteUrl("https://example.com");
+        var general = new HubSettings.General(); general.setBrandName("<script>unsafe</script>"); general.setSiteUrl("https://example.com"); general.setPageUrl("https://example.com/updates");
         when(settings.general()).thenReturn(Mono.just(general)); when(settings.mail()).thenReturn(Mono.just(mail));
         when(tokens.issue(any(), eq("verify"))).thenReturn(Mono.just("verify-token"));
         when(tokens.issue(any(), eq("unsubscribe"))).thenReturn(Mono.just("unsubscribe-token"));
@@ -36,8 +36,8 @@ class EmailTest {
     @Test void verificationUsesSeparatePurposeBoundTokensAndEscapesBrand() {
         delivery.getSpec().setType("VERIFY"); channel.send(sub, delivery, null, null).block();
         var content = captured();
-        assertTrue(content.html().contains("/releases/verify?token=verify-token"));
-        assertEquals("https://example.com/releases/unsubscribe?token=unsubscribe-token", content.unsubscribeUrl());
+        assertTrue(content.html().contains("/updates?rh-action=verify&amp;rh-token=verify-token"));
+        assertEquals("https://example.com/updates?rh-action=unsubscribe&rh-token=unsubscribe-token", content.unsubscribeUrl());
         assertFalse(content.html().contains("<script>"));
         assertFalse(content.plain().contains("/unsubscribe"));
         assertEquals("test@example.com", content.to());
@@ -49,7 +49,7 @@ class EmailTest {
         release.getSpec().setTag("1.0.0"); release.getSpec().setSummary("<b>updated</b>"); release.getSpec().setPublishedAt(Instant.parse("2026-01-01T00:00:00Z"));
         channel.send(sub, delivery, release, project).block();
         var content = captured(); assertEquals("文章组件 更新 1.0.0", content.subject());
-        assertTrue(content.html().contains("/releases/versions/release-1"));
+        assertTrue(content.html().contains("/updates?rh-release=release-1"));
         assertTrue(content.html().contains("&lt;b&gt;updated&lt;/b&gt;"));
         assertEquals("delivery-42", content.id()); assertTrue(content.unsubscribeUrl().contains("unsubscribe-token"));
     }

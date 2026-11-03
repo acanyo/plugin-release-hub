@@ -78,7 +78,7 @@ class HaloEmailSenderTest {
         assertFalse(failure.getMessage().contains("private-system-password")); assertFalse(failure.getMessage().contains("test@example.com"));
     }
     @Test void durableQueueWaitsForNativeResultAndRetriesWithoutAnotherDelivery() {
-        var settings = mock(HubSettings.class); var general = new HubSettings.General(); general.setSiteUrl("https://example.com");
+        var settings = mock(HubSettings.class); var general = new HubSettings.General(); general.setSiteUrl("https://example.com"); general.setPageUrl("https://example.com/updates");
         var mail = new HubSettings.Mail(); mail.setEnabled(true);
         when(settings.general()).thenReturn(Mono.just(general)); when(settings.mail()).thenReturn(Mono.just(mail));
         var channel = new EmailChannel(settings, new TokenService(memory.store, secrets), sender);

@@ -8,8 +8,10 @@
     import EmptyState from '../shared/EmptyState.svelte'
     import { date, errorMessage, safeLink } from '../shared/format'
     import { projectName } from './project-name'
+    import { pageLink } from '../shared/page-links'
     let {
         api,
+        pageUrl,
         projects,
         accounts,
         openAccounts,
@@ -17,6 +19,7 @@
         notify,
     }: {
         api: ReleaseHubAdminApi
+        pageUrl: string
         projects: Project[]
         accounts: AccountView[]
         openAccounts: () => void
@@ -232,14 +235,17 @@
                                         title="编辑仓库"
                                         onclick={() => edit(p)}
                                         ><Icon name="edit" size={15} /></button
-                                    ><a
-                                        class="rh-icon-button"
-                                        href={`/releases/projects/${p.metadata.name}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label={`查看 ${projectName(p)} 发布页`}
-                                        title="查看发布页"><Icon name="arrow" size={15} /></a
-                                    >
+                                    >{#if pageUrl}<a
+                                            class="rh-icon-button"
+                                            href={pageLink(
+                                                { 'rh-project': p.metadata.name },
+                                                pageUrl,
+                                            )}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label={`查看 ${projectName(p)} 发布页`}
+                                            title="查看发布页"><Icon name="arrow" size={15} /></a
+                                        >{/if}
                                 </div></td
                             >
                         </tr>{/each}</tbody

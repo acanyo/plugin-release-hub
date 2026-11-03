@@ -16,7 +16,7 @@
 
 Gradle 会安装并构建 UI、运行后端测试，并将前台和 Console 静态资源一起打包到 `build/libs/plugin-release-hub-1.0.0.jar`。普通构建无需运行 Halo 或 Docker。
 
-在 Halo Console 的插件管理中上传此 JAR 并启用。前台入口为 `/releases`，Console 菜单为「版本中心」。
+在 Halo Console 的插件管理中上传此 JAR 并启用。Console 菜单为「版本中心」；前台由你在 Halo「页面」中插入编辑器组件后发布。
 
 ## 首次配置
 
@@ -24,7 +24,10 @@ Gradle 会安装并构建 UI、运行后端测试，并将前台和 Console 静�
 2. 在 Console「版本中心 → 仓库账号」添加平台账号，填写名称，通过 Halo 官方 **Secret 组件**选择或创建一个包含 **`token`** 字段的密钥。保存时由后端读取 Token 验证并识别账号；GitLab 可填写公网自建站点根地址。
 3. 点击「选择仓库」，加载并勾选需要同步的仓库，每批最多 50 个。可设置同步间隔（5–10080 分钟）与是否立即启用；已有仓库会标记并跳过。也可在「仓库管理 → 手动添加」中填写地址并使用同一个官方 Secret 组件，公开仓库允许不选密钥。
 4. 点击「同步」，或等待后台任务。首次导入历史数据默认不发送通知，完整同步成功后才开启后续新版本通知。
-5. 打开 `/releases` 查看聚合版本页面，或从项目导航进入独立项目页。
+5. 打开 Halo「页面 → 新建」，在默认编辑器工具箱选择 **「版本中心」**，或输入 `/版本中心` 插入组件。直接在组件中选择全部项目或指定项目、时间线/表格、默认版本范围和是否显示概览。
+6. 保存并发布页面，按需添加到站点菜单。将该页面的完整 HTTPS 地址填写到「插件设置 → 站点与品牌 → 已发布的版本页面地址」，邮件和 Feed 的详情、确认、退订链接会使用此地址。
+
+组件随页面内容保存，重新编辑可继续调整，后续版本同步后自动更新。支持同一页面放置多个组件，各自筛选与分页独立，不改变页面地址或标题。插件不再注册 `/releases` 等独立 HTML 展示路由；RSS/Atom 订阅端点继续保留。已有旧版 `/releases` 菜单请改为你发布的页面地址。
 
 仓库的平台和地址创建后不可更换；更换项目时添加新仓库。可编辑名称、描述、频率、排序、令牌和启停状态。停用仓库会停止同步、前台展示和该项目通知，历史数据保留。
 
@@ -113,7 +116,7 @@ X-Release-Hub-Signature: sha256=<HMAC-SHA256 十六进制值>
     "publishedAt": "2026-10-14T00:00:00Z",
     "prerelease": false,
     "summary": "更新摘要",
-    "url": "https://example.com/releases/versions/release-..."
+    "url": "https://example.com/updates?rh-release=release-..."
   }
 }
 ```
@@ -132,9 +135,8 @@ X-Release-Hub-Signature: sha256=<HMAC-SHA256 十六进制值>
 - 项目筛选与订阅弹窗使用同一个 Svelte 项目选择器，菜单包含选中勾、悬停与开合效果，支持键盘操作和边界避让。选择交互基于 [Bits UI Select](https://bits-ui.com/docs/components/select)。
 - 适配移动端，支持键盘操作与原生 dialog 焦点管理。
 - Markdown 原始 HTML 转义后再清洗，移除脚本、不安全链接和外部图片追踪。
-- 默认模板名为 **`release-hub.html`**，当前主题可提供同名模板覆盖。
-- 默认模板使用 Halo 的 `layout :: html(head, content)` 契约；主题未适配时自动使用 Halo fallback 布局。
-- 稳定模板标识为 **`plugin:release-hub:release-hub`**。
+- 使用 Halo 默认编辑器的原生工具箱与斜杠命令保存 `<release-hub-embed>` 组件，页面外壳由当前主题负责，不需要复制模板或粘贴 HTML。
+- 通过 Halo `TemplateHeadProcessor` 安装轻量加载器，仅在页面包含组件时加载前台 JS/CSS，兼容组件重连和页面节点替换。
 - 公开浏览 API 位于 `/apis/api.release-hub.xhhao.com/v1alpha1`，主题可以直接使用 `projects`、`releases`、`releases/{name}` 与 `settings`。
 
 Console 的页面也由 Svelte 实现，唯一 Vue 文件 `ConsoleBridge.vue` 负责接入 Halo Vue 路由和复用官方 `axiosInstance`。
